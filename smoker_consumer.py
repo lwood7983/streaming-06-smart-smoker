@@ -15,25 +15,20 @@ from collections import deque
 # define variables that will be used throughout
 host = "localhost"
 smoker_temp_queue = '01-smoker'
-#food_a_temp_queue = '02-food-A'
-#food_b_temp_queue = '02-food-B'
+
 
 
 #######################################################################################
-# defining deque
+# defining deque for smoker
 
 smoker_temp_deque = deque(maxlen=5)  # limited to 5 items (the 5 most recent readings)
-#food_a_temp_deque = deque(maxlen=20) # limited to 20 items (the 20 most recent readings)
-#food_b_temp_deque = deque(maxlen=20) # limited to 20 items (the 20 most recent readings)
-
 
 # We want know if the follow even occurs
 #The smoker temperature decreases by more than 15 degrees F in 2.5 minutes (smoker alert!)
 # set alert limits
 
 smoker_alert_limit = 15 # if temp decreases by this amount, then send a smoker alert
-#food_stall_alert_limit = 1 # if temp decreased by this amount, then send a food stall alert
-#Any food temperature changes less than 1 degree F in 10 minutes (food stall!)
+
 
 #######################################################################################
 ## define delete_queue
@@ -46,7 +41,6 @@ def delete_queue(host: str, queue_name: str):
     ch.queue_delete(queue=queue_name)
 ########################################################################################
 # define a callback function to be called when a message is received
-# defining for each queue
 # defining callback for smoker queue
 
 def smoker_callback(ch, method, properties, body):
@@ -57,17 +51,22 @@ def smoker_callback(ch, method, properties, body):
     # acknowledge the message was received and processed 
     # (now it can be deleted from the queue)
     ch.basic_ack(delivery_tag=method.delivery_tag)
+    # sleep in seconds
     time.sleep(1)
+
+
     # def smoker deque queue
     # adding message to the smoker deque
     smoker_temp_deque.append(message)
 
     # identifying first item in the deque
     smoker_deque_temp = smoker_temp_deque[0]
+
     # splitting date & timestamp from temp in column
     # will now have date & timestamp in index 0 and temp in index 1
     # this will be looking at what occurred 2.5mins prior
     smoker_deque_split = smoker_deque_temp.split(",")
+
     # converting temp in index 1 to float and removing last character  
     smoker_temp_1 = float(smoker_deque_split[1][:-1])
    
@@ -158,5 +157,6 @@ def main(hn: str, qn: str):
 # without executing the code below.
 # If this is the program being run, then execute the code below
 if __name__ == "__main__":
+    
     # call the main function with the information needed
     main(host, smoker_temp_queue)

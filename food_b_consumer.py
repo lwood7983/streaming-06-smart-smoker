@@ -14,24 +14,18 @@ from collections import deque
 
 # define variables that will be used throughout
 host = "localhost"
-#smoker_temp_queue = '01-smoker'
-#food_a_temp_queue = '02-food-A'
 food_b_temp_queue = '02-food-B'
 
 
 #######################################################################################
 # defining deque
 
-#smoker_temp_deque = deque(maxlen=5)  # limited to 5 items (the 5 most recent readings)
-#food_a_temp_deque = deque(maxlen=20) # limited to 20 items (the 20 most recent readings)
 food_b_temp_deque = deque(maxlen=20) # limited to 20 items (the 20 most recent readings)
 
-
 # We want know if the follow even occurs
-#The smoker temperature decreases by more than 15 degrees F in 2.5 minutes (smoker alert!)
+#The food temperature changes less than 1 degree F in 10 minutes (food stall)
 # set alert limits
 
-#smoker_alert_limit = 15 # if temp decreases by this amount, then send a smoker alert
 food_stall_alert_limit = 1 # if temp decreased by this amount, then send a food stall alert
 #Any food temperature changes less than 1 degree F in 10 minutes (food stall!)
 
@@ -46,8 +40,7 @@ def delete_queue(host: str, queue_name: str):
     ch.queue_delete(queue=queue_name)
 ########################################################################################
 # define a callback function to be called when a message is received
-# defining for each queue
-# defining callback for smoker queue
+# defining callback for food B queue
 
 def food_B_callback(ch, method, properties, body):
     """ Define behavior on getting a message about the foodA temperature."""
@@ -57,9 +50,11 @@ def food_B_callback(ch, method, properties, body):
     # acknowledge the message was received and processed 
     # (now it can be deleted from the queue)
     ch.basic_ack(delivery_tag=method.delivery_tag)
+    # sleep in seconds
     time.sleep(1)
-    # def smoker deque queue
-    # adding message to the smoker deque
+
+    # def food B deque queue
+    # adding message to the food B deque
     food_b_temp_deque.append(message)
 
     # identifying first item in the deque
@@ -71,7 +66,7 @@ def food_B_callback(ch, method, properties, body):
     # converting temp in index 1 to float and removing last character  
     food_b_temp_1 = float(food_b_deque_split[1][:-1])
    
-    # defining current smoker temp
+    # defining current food B temp
     food_b_curr_temp = message
     # splitting date & timestamp from temp in column
     # will now have date & timestamp in index 0 and temp in index 1
@@ -80,10 +75,10 @@ def food_B_callback(ch, method, properties, body):
     # converting temp in index 1 to float and removing last character    
     food_b_now_temp = float(food_b_curr_column[1][:-1])
     
-    # defining foodA temp change and calculating the difference
+    # defining foodB temp change and calculating the difference
     # rounding difference to 1 decimal point
     food_b_temp_change = round(food_b_now_temp - food_b_temp_1, 1)
-    # defining smoker alert
+    # defining foodB alert
     if food_b_temp_change >= food_stall_alert_limit:
         print(f" FOOD STALL!! The temperature of the food has changed by 1 degree or less in 10 min (or 20 readings). \n          foodB temp change = {food_b_temp_change} degrees F = {food_b_now_temp} - {food_b_temp_1}")
        
