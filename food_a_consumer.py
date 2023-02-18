@@ -45,7 +45,8 @@ def delete_queue(host: str, queue_name: str):
 # defining callback for foodA queue
 
 def food_A_callback(ch, method, properties, body):
-    """ Define behavior on getting a message about the foodA temperature."""
+    """ Define behavior on getting a message about the foodA temperature.  Since the producer 
+    ignored the blanks in the code, the consumer will not be receiving any of the blank rows."""
     # decode the binary message body to a string
     message = body.decode()
     print(f" [x] Received {message} on 02-food-A")
@@ -53,7 +54,7 @@ def food_A_callback(ch, method, properties, body):
     # (now it can be deleted from the queue)
     ch.basic_ack(delivery_tag=method.delivery_tag)
     # sleep in seconds
-    time.sleep(1)
+    time.sleep(.5)
     # def food A deque queue
     # adding message to the food A deque
     food_a_temp_deque.append(message)

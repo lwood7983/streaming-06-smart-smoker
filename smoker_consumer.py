@@ -44,7 +44,8 @@ def delete_queue(host: str, queue_name: str):
 # defining callback for smoker queue
 
 def smoker_callback(ch, method, properties, body):
-    """ Define behavior on getting a message about the smoker temperature."""
+    """ Define behavior on getting a message about the smoker temperature.  Since the producer 
+    ignored the blanks in the code, the consumer will not be receiving any of the blank rows."""
     # decode the binary message body to a string
     message = body.decode()
     print(f" [x] Received {message} on 01-smoker")
@@ -52,7 +53,7 @@ def smoker_callback(ch, method, properties, body):
     # (now it can be deleted from the queue)
     ch.basic_ack(delivery_tag=method.delivery_tag)
     # sleep in seconds
-    time.sleep(1)
+    time.sleep(.5)
 
 
     # def smoker deque queue
