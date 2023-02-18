@@ -110,5 +110,9 @@ You'll need some way to send outgoing emails. I use my main Gmail account - othe
 # Screenshot of the Producer and 3 Consumers running:
 Running producer and consumers.  Image below shows all 4 terminals running along with RabbitMQ running the queues.
 
+![Consumers_running_with_rabbitmq](RabbitMQ_running.png)
 
+Running producer and consumers. Image below shows all 4 terminals running with alert messages. Set time to 1/2 second in order to capture the images.
+!
+[Consumers_with_alerts](Producer&Consumers.png)
 
