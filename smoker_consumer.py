@@ -53,7 +53,7 @@ def smoker_callback(ch, method, properties, body):
     # (now it can be deleted from the queue)
     ch.basic_ack(delivery_tag=method.delivery_tag)
     # sleep in seconds
-    time.sleep(.5)
+    time.sleep(1)
 
 
     # def smoker deque queue

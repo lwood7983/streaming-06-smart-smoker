@@ -51,8 +51,8 @@ def food_B_callback(ch, method, properties, body):
     # acknowledge the message was received and processed 
     # (now it can be deleted from the queue)
     ch.basic_ack(delivery_tag=method.delivery_tag)
-    # sleep in seconds
-    time.sleep(.5)
+    # sleep in seconds to watch alerts
+    time.sleep(1)
 
     # def food B deque queue
     # adding message to the food B deque
