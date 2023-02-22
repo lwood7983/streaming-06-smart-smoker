@@ -79,10 +79,10 @@ def food_A_callback(ch, method, properties, body):
     
     # defining foodA temp change and calculating the difference
     # rounding difference to 1 decimal point
-    food_a_temp_change = round(food_a_now_temp - food_a_temp_1, 1)
+    food_a_temp_change = round(food_a_temp_1 - food_a_now_temp, 1)
     # defining food A alert
     if food_a_temp_change >= food_stall_alert_limit:
-        print(f" FOOD STALL!! The temperature of the food has changed by 1 degree or less in 10 min (or 20 readings). \n          foodA temp change = {food_a_temp_change} degrees F = {food_a_now_temp} - {food_a_temp_1}")
+        print(f" FOOD STALL!! The temperature of the food has changed by 1 degree or less in 10 min (or 20 readings). \n          foodA temp change = {food_a_temp_change} degrees F = {food_a_temp_1} - {food_a_now_temp}")
        
 
 # define a main function to run the program

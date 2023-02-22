@@ -82,10 +82,10 @@ def smoker_callback(ch, method, properties, body):
     
     # defining smoker temp change and calculating the difference
     # rounding difference to 1 decimal point
-    smoker_temp_change = round(smoker_now_temp - smoker_temp_1, 1)
+    smoker_temp_change = round(smoker_temp_1 - smoker_now_temp, 1)
     # defining smoker alert
     if smoker_temp_change >= smoker_alert_limit:
-        print(f" Smoker alert!!! The temperature of the smoker has decreased by 15 F or more in 2.5 min (or 5 readings). \n          Smoker temp decrease = {smoker_temp_change} degrees F = {smoker_now_temp} - {smoker_temp_1}")
+        print(f" Smoker alert!!! The temperature of the smoker has decreased by 15 F or more in 2.5 min (or 5 readings). \n          Smoker temp decrease = {smoker_temp_change} degrees F = {smoker_temp_1} - {smoker_now_temp}")
         
     
 
